@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INTDB_ROOT_USERNAME: "umarabox"
+      MONGO_INITDB_ROOT_PASSWORD: "secret"
+      MONGO_INITDB_ROOT_DATABASE: "mydb"
+    networks:
+      - narrnet
+    volumes:
+      - /home/umarabox/Documents/my projects/docker_swarm_contacts_app/api/storage:/data/db
+
+  api:
+    image: uzlash/narr-gateway:v1.0
+    restart: always
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      MONGO_INTDB_ROOT_USERNAME: "umarabox"
+      MONGO_INITDB_ROOT_PASSWORD: "secret"
+      MONGO_INITDB_ROOT_DATABASE: "mydb" 
+
+    networks:
+      - narrnet
+
+  narrnet:
+    driver: bridge
